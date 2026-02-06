@@ -68,10 +68,10 @@ export default function Survey() {
   return (
     <div style={{ padding: 16, maxWidth: 820 }}>
       <h1>MagAnon</h1>
-      <p>Anonymous, crowd-sourced magnetic field + location mapping (iOS-first).</p>
+      <p>Anonymous, crowd-sourced magnetic field + location mapping (Android-first).</p>
       <p style={{ color: '#555' }}>
-        Note: Safari web apps on iOS don’t reliably expose raw magnetometer data. The iOS app wrapper
-        (Capacitor) will provide the real sensor bridge.
+        This page is a legacy stub. Use <b>Record</b> for on-device Android collection (Pixel 9
+        target) via a Capacitor plugin.
       </p>
 
       <h2>Live Survey (stub)</h2>

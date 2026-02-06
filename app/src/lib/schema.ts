@@ -17,6 +17,13 @@ export type Sample = {
   /** Optional raw vector if available from native bridge */
   magnetic_vec_uT?: MagneticVec
 
+  /** Basic quality-control flags (best-effort; optional). */
+  qc?: {
+    gps_ok?: boolean
+    mag_ok?: boolean
+    rot_ok?: boolean
+  }
+
   /** Coarse device hints; optional to preserve anonymity */
   platform?: 'ios' | 'android' | 'web'
   device_model?: string

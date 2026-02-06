@@ -1,62 +1,98 @@
-import { Capacitor } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 
-/**
- * JS bridge contract for native sensor streaming.
- *
- * Web builds should degrade gracefully (no magnetometer access).
- * The native iOS/Android plugin will be implemented later.
- */
-export type SensorSample = {
-  ts_ms: number
-  /** Magnetic vector in microtesla */
-  magnetic_vec_uT?: { x: number; y: number; z: number }
-  heading_deg?: number
+export type RecorderStatus = {
+  recording: boolean
+  background: boolean
+  sessionId?: string | null
+  sampleCount: number
+  lastAccuracyM?: number | null
+  lastTsMs?: number | null
 }
 
-export type Unsubscribe = () => void
+export type ExportResult = {
+  format: string
+  path: string
+  mime: string
+}
 
-export type SensorsBridge = {
-  isAvailable(): boolean
-  start(): Promise<void>
-  stop(): Promise<void>
-  subscribe(cb: (s: SensorSample) => void): Unsubscribe
+export type StartRecordingOpts = {
+  background: boolean
+  sampleHz: number
+  minAccuracyM: number
+}
+
+type MagSensorsPlugin = {
+  startRecording(opts: StartRecordingOpts): Promise<void>
+  stopRecording(): Promise<void>
+  getStatus(): Promise<RecorderStatus>
+  exportSession(opts: { format: string }): Promise<ExportResult>
+}
+
+const MagSensors = registerPlugin<MagSensorsPlugin>('MagSensors')
+
+let mock: RecorderStatus = {
+  recording: false,
+  background: false,
+  sessionId: null,
+  sampleCount: 0,
+  lastAccuracyM: null,
+  lastTsMs: null,
 }
 
 let timer: number | null = null
-let listeners: Array<(s: SensorSample) => void> = []
 
-export const Sensors: SensorsBridge = {
-  isAvailable() {
-    // Eventually: return Capacitor.isNativePlatform() && plugin present.
+export const Sensors = {
+  isAvailable(): boolean {
     return Capacitor.isNativePlatform()
   },
 
-  async start() {
-    // Stub: emit fake samples on native builds until plugin exists.
+  async startRecording(opts: StartRecordingOpts): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await MagSensors.startRecording(opts)
+      return
+    }
+
+    // Web mock (no real sensors): bump sample counter at sampleHz.
     if (timer != null) return
-    const start = Date.now()
+    mock = {
+      recording: true,
+      background: false,
+      sessionId: 'web-mock',
+      sampleCount: 0,
+      lastAccuracyM: 12,
+      lastTsMs: Date.now(),
+    }
+    const periodMs = Math.max(50, Math.floor(1000 / Math.max(1, opts.sampleHz)))
     timer = window.setInterval(() => {
-      const i = Math.floor((Date.now() - start) / 1000)
-      const sample: SensorSample = {
-        ts_ms: Date.now(),
-        magnetic_vec_uT: { x: 10 + Math.sin(i / 3), y: 5, z: 42 },
-        heading_deg: (90 + i * 2) % 360,
-      }
-      for (const cb of listeners) cb(sample)
-    }, 1000)
+      mock.sampleCount += 1
+      mock.lastTsMs = Date.now()
+      mock.lastAccuracyM = 8 + Math.random() * 8
+    }, periodMs)
   },
 
-  async stop() {
+  async stopRecording(): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await MagSensors.stopRecording()
+      return
+    }
     if (timer != null) {
       window.clearInterval(timer)
       timer = null
     }
+    mock.recording = false
   },
 
-  subscribe(cb) {
-    listeners.push(cb)
-    return () => {
-      listeners = listeners.filter((x) => x !== cb)
+  async getStatus(): Promise<RecorderStatus> {
+    if (Capacitor.isNativePlatform()) {
+      return await MagSensors.getStatus()
     }
+    return mock
+  },
+
+  async exportSession(format: string): Promise<ExportResult> {
+    if (Capacitor.isNativePlatform()) {
+      return await MagSensors.exportSession({ format })
+    }
+    return { format, path: '', mime: 'application/octet-stream' }
   },
 }

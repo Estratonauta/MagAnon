@@ -38,3 +38,6 @@ adb install -r app/android/app/build/outputs/apk/debug/app-debug.apk
 ## Notes
 - Debug APK is for testing. For Play Store / sharing broadly, we’ll add a signed **release** build later.
 - GitHub Actions is configured to build and attach a debug APK artifact on every push to `main`.
+- **Background recording** uses an Android foreground service and therefore requires a persistent notification.
+  - On **Android 13+**, grant **Notifications** permission (`POST_NOTIFICATIONS`) or the service notification may be blocked.
+  - Location permission is required for GPS (`ACCESS_FINE_LOCATION`).

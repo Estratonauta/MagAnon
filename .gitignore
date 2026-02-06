@@ -4,6 +4,7 @@ node_modules/
 # Builds
 dist/
 build/
+**/tsconfig.tsbuildinfo
 
 # Env
 .env
@@ -18,4 +19,9 @@ build/
 # iOS/Android (Capacitor/Cordova)
 ios/App/Pods/
 ios/App/build/
-android/
+
+# Keep Android sources in git; ignore build outputs.
+android/.gradle/
+android/**/build/
+android/**/.cxx/
+android/local.properties
