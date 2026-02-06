@@ -25,3 +25,7 @@ For iOS-first reliability, this project is designed to run as a thin iOS wrapper
 
 ## License
 MIT
+
+## Web demo (GitHub Pages)
+Once Pages is enabled in the repo settings, the web demo will be at:
+https://estratonauta.github.io/MagAnon/
