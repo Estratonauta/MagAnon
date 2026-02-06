@@ -24,6 +24,11 @@ For iOS-first reliability, this project is designed to run as a thin iOS wrapper
 4. Map view (hexbin/heatmap) of anomaly.
 
 ## License
+
+- Code: MIT
+- Public data pool: ODbL 1.0 (see docs/DATA_LICENSE.md)
+
+
 MIT
 
 ## Web demo (GitHub Pages)
