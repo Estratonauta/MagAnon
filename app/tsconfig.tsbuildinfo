@@ -1,1 +1,1 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/pages/Map.tsx","./src/pages/Survey.tsx"],"version":"5.9.3"}
+{"root":["./src/App.tsx","./src/main.tsx","./src/bridge/sensors.ts","./src/components/ExportPicker.tsx","./src/lib/exporters.ts","./src/lib/mockSession.ts","./src/lib/schema.ts","./src/pages/Map.tsx","./src/pages/Survey.tsx"],"version":"5.9.3"}

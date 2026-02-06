@@ -34,3 +34,6 @@ MIT
 ## Web demo (GitHub Pages)
 Once Pages is enabled in the repo settings, the web demo will be at:
 https://estratonauta.github.io/MagAnon/
+
+## Android APK
+See `docs/ANDROID_APK.md`.
