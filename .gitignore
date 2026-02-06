@@ -1,0 +1,21 @@
+# Node
+node_modules/
+
+# Builds
+dist/
+build/
+
+# Env
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# iOS/Android (Capacitor/Cordova)
+ios/App/Pods/
+ios/App/build/
+android/
