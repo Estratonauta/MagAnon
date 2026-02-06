@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MagAnon</string>
+    <string name="title_activity_main">MagAnon</string>
+    <string name="package_name">com.maganon.app</string>
+    <string name="custom_url_scheme">com.maganon.app</string>
+</resources>
